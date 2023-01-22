@@ -1,109 +1,122 @@
 package com.example.bsbstudynovitsky.services.impl;
 
 import com.example.bsbstudynovitsky.entities.User;
-import com.example.bsbstudynovitsky.repositories.UserRepository;
 import com.example.bsbstudynovitsky.services.UserService;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import io.zonky.test.db.shaded.com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
+@AutoConfigureEmbeddedDatabase(refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 class BasicUserServiceTest {
 
     @Autowired
     private UserService userService;
 
-    @MockBean
-    private UserRepository userRepository;
 
     @Test
     void save() {
 
         User user = new User();
         user.setFirstname("Ivan");
-        when(userRepository.save(user)).thenReturn(user);
+        user.setLastname("Ivanov");
+        user.setPhoneNumber("+375 33 777 77 77");
+        user.setEmail("ivan@gmail.com");
 
-        User dbUser = userService.save(user);
+        userService.save(user);
+        User dbUser = userService.findById(user.getId());
 
-        assertThat(dbUser.getFirstname()).isSameAs(user.getFirstname());
-        verify(userRepository).save(user);
+        assertEquals(user, dbUser);
 
     }
 
     @Test
     void findAll() {
 
-        User first = new User();
-        first.setFirstname("Ivan");
-        User second = new User();
-        second.setFirstname("Vladimir");
-        when(userRepository.findAll()).thenReturn(List.of(first, second));
+        User ivan = new User();
+        ivan.setFirstname("Ivan");
+        ivan.setLastname("Ivanov");
+        ivan.setPhoneNumber("+375 33 777 77 77");
+        ivan.setEmail("ivan@gmail.com");
 
-        Iterable<User> all = userService.findAll();
-        List<User> users = new ArrayList<>();
-        all.forEach(users::add);
+        User vladimir = new User();
+        vladimir.setFirstname("Vladimir");
+        vladimir.setLastname("Vladimirov");
+        vladimir.setPhoneNumber("+375 33 555 55 55");
+        vladimir.setEmail("valodia@gmail.com");
 
-        assertThat(users.size()).isSameAs(2);
-        verify(userRepository).findAll();
+
+        userService.save(ivan);
+        userService.save(vladimir);
+        ImmutableList<User> users = ImmutableList.copyOf(userService.findAll());
+
+        assertEquals(2, users.size());
+        assertTrue(users.containsAll(List.of(ivan, vladimir)));
 
     }
 
     @Test
     void findById() {
 
-        Long id = 1L;
         User user = new User();
-        user.setId(1L);
-        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+        user.setFirstname("Ivan");
+        user.setLastname("Ivanov");
+        user.setPhoneNumber("+375 33 777 77 77");
+        user.setEmail("ivan@gmail.com");
 
-        User dbUser = userService.findById(id);
+        User saved = userService.save(user);
+        User retrieved = userService.findById(saved.getId());
 
-        assertThat(dbUser.getId()).isSameAs(id);
-        verify(userRepository).findById(id);
+        assertEquals(saved, retrieved);
 
     }
 
     @Test
     void update() {
 
-        Long id = 1L;
         User user = new User();
-        user.setId(id);
         user.setFirstname("Ivan");
-        when(userRepository.findById(id)).thenReturn(Optional.of(user));
-        when(userRepository.save(user)).thenReturn(user);
+        user.setLastname("Ivanov");
+        user.setPhoneNumber("+375 33 777 77 77");
+        user.setEmail("ivan@gmail.com");
 
-        User dbUser = userService.update(id, user);
+        User update = new User();
+        update.setFirstname("Ivan");
+        update.setLastname("Ivanov");
+        update.setPhoneNumber("+375 33 555 55 55");
+        update.setEmail("ivan777@gmail.com");
 
-        assertThat(dbUser.getFirstname()).isSameAs(user.getFirstname());
-        verify(userRepository).save(user);
+        userService.save(user);
+        userService.update(user.getId(), update);
+        User dbUser = userService.findById(user.getId());
+
+        assertEquals(update, dbUser);
+
 
     }
 
     @Test
     void deleteById() {
 
-        Long id = 1L;
         User user = new User();
-        user.setId(1L);
-        willDoNothing().given(userRepository).deleteById(id);
+        user.setFirstname("Ivan");
+        user.setLastname("Ivanov");
+        user.setPhoneNumber("+375 33 777 77 77");
+        user.setEmail("ivan@gmail.com");
 
-        userService.deleteById(id);
+        userService.save(user);
+        userService.deleteById(user.getId());
 
-        verify(userRepository).deleteById(id);
+        assertThrows(NoSuchElementException.class,
+                () -> userService.findById(user.getId()));
 
     }
 }

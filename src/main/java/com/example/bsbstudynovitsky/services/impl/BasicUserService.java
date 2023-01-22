@@ -32,6 +32,7 @@ public class BasicUserService implements UserService {
         User dbUser = userRepository.findById(id).orElseThrow();
         user.setId(dbUser.getId());
         user.setCreatedAt(dbUser.getCreatedAt());
+        user.setUpdatedAt(dbUser.getUpdatedAt());
         return userRepository.save(user);
     }
 
