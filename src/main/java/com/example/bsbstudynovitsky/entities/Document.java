@@ -14,6 +14,8 @@ import lombok.EqualsAndHashCode;
 public class Document extends BasicIdAwareEntity {
 
     private String title;
+    private String data;
+    private String contentType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

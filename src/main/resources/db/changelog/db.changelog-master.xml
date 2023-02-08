@@ -51,6 +51,8 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="varchar(256)"/>
+            <column name="data" type="varchar(256)"/>
+            <column name="content_type" type="varchar(256)"/>
             <column name="created_at" type="timestamp"/>
             <column name="updated_at" type="timestamp"/>
             <column name="user_id" type="integer">

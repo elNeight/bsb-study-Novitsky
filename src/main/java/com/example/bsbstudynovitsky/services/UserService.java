@@ -2,9 +2,11 @@ package com.example.bsbstudynovitsky.services;
 
 import com.example.bsbstudynovitsky.entities.User;
 
+import java.util.List;
+
 public interface UserService {
 
-    Iterable<User> findAll();
+    List<User> findAll();
 
     User findById(Long id);
 
