@@ -1,9 +1,8 @@
 package com.example.bsbstudynovitsky.security.jwt.provider.impl;
 
 import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret}")
@@ -24,34 +24,48 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
+
+        Instant now = Instant.now();
+
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(expiration, ChronoUnit.HOURS)))
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plus(expiration, ChronoUnit.MINUTES)))
+                .claim("role", userDetails.getAuthorities())
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
     @Override
-    public <T> T extractClaim(String token, Function<Claims, T> resolver) {
+    public <T> T extractClaim(String token, Function<Claims, T> claimExtractor) {
 
         Claims claims = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return resolver.apply(claims);
+        return claimExtractor.apply(claims);
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        String username = extractClaim(token, Claims::getSubject);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
+    public boolean isTokenValid(String token) {
 
-    private boolean isTokenExpired(String token) {
-        Date expiration = extractClaim(token, Claims::getExpiration);
-        return expiration.before(Date.from(Instant.now()));
+        try {
+            extractClaim(token, Function.identity());
+            return true;
+        } catch (ExpiredJwtException expEx) {
+            log.error("Token expired");
+        } catch (UnsupportedJwtException unsEx) {
+            log.error("Unsupported jwt");
+        } catch (MalformedJwtException mjEx) {
+            log.error("Malformed jwt");
+        } catch (SignatureException sEx) {
+            log.error("Invalid signature");
+        } catch (Exception e) {
+            log.error("invalid token");
+        }
+
+        return false;
     }
 
 }

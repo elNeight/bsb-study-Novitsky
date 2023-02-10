@@ -11,6 +11,6 @@ public interface JwtService {
 
     <T> T extractClaim(String token, Function<Claims, T> resolver);
 
-    boolean isTokenValid(String token, UserDetails userDetails);
+    boolean isTokenValid(String token);
 
 }
