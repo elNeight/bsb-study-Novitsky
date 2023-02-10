@@ -1,7 +1,7 @@
 package com.example.bsbstudynovitsky.services.impl;
 
-import com.example.bsbstudynovitsky.dto.AuthenticationRequest;
-import com.example.bsbstudynovitsky.dto.JwtResponse;
+import com.example.bsbstudynovitsky.dto.auth.AuthenticationRequest;
+import com.example.bsbstudynovitsky.dto.auth.JwtResponse;
 import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
 import com.example.bsbstudynovitsky.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.bsbstudynovitsky.controllers;
 
-import com.example.bsbstudynovitsky.dto.UserDTO;
+import com.example.bsbstudynovitsky.dto.user.UserDTO;
 import com.example.bsbstudynovitsky.dto.mappers.UserMapper;
 import com.example.bsbstudynovitsky.services.UserService;
 import lombok.RequiredArgsConstructor;

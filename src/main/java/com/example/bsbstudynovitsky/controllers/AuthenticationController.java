@@ -1,6 +1,6 @@
 package com.example.bsbstudynovitsky.controllers;
 
-import com.example.bsbstudynovitsky.dto.AuthenticationRequest;
+import com.example.bsbstudynovitsky.dto.auth.AuthenticationRequest;
 import com.example.bsbstudynovitsky.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

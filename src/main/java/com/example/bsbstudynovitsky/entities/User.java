@@ -7,7 +7,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -25,5 +27,25 @@ public class User extends BasicIdAwareEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Document> documents;
+
+    public void addAddress(Address address) {
+
+        if (Objects.isNull(addresses))
+            addresses = new ArrayList<>();
+
+        addresses.add(address);
+        address.setUser(this);
+
+    }
+
+    public void addDocument(Document document) {
+
+        if (Objects.isNull(documents))
+            documents = new ArrayList<>();
+
+        documents.add(document);
+        document.setUser(this);
+
+    }
 
 }

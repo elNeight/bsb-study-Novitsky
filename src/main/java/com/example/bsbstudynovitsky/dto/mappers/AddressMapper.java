@@ -1,6 +1,6 @@
 package com.example.bsbstudynovitsky.dto.mappers;
 
-import com.example.bsbstudynovitsky.dto.AddressDTO;
+import com.example.bsbstudynovitsky.dto.address.AddressDTO;
 import com.example.bsbstudynovitsky.entities.Address;
 import org.mapstruct.Mapper;
 
