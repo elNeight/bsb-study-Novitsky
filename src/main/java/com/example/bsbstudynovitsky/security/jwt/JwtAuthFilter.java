@@ -24,8 +24,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    private final String headerName;
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -52,7 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private String getTokenFromRequest(HttpServletRequest request) {
 
-        String bearer = request.getHeader(headerName);
+        String bearer = jwtService.getTokenFromRequest(request);
 
         if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer "))
             return bearer.substring(7);

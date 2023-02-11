@@ -2,6 +2,7 @@ package com.example.bsbstudynovitsky.security.jwt.provider.impl;
 
 import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,15 +13,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.function.Function;
 
-@Service
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret}")
     private String secret;
-
     @Value("${jwt.expiration}")
     private long expiration;
+    @Value("${jwt.header}")
+    private String authorizationHeaderName;
 
     @Override
     public String generateToken(UserDetails userDetails) {
@@ -66,6 +67,10 @@ public class JwtServiceImpl implements JwtService {
         }
 
         return false;
+    }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        return request.getHeader(authorizationHeaderName);
     }
 
 }

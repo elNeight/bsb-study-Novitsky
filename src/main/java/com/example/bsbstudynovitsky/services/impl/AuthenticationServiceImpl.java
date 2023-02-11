@@ -6,13 +6,10 @@ import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
 import com.example.bsbstudynovitsky.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
 
         UserDetails details = (UserDetails) authentication.getPrincipal();
-
-        if (Objects.isNull(details))
-            throw new BadCredentialsException("Bad credentials");
 
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(jwtService.generateToken(details));
