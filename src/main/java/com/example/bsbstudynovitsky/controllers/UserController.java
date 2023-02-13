@@ -1,8 +1,9 @@
 package com.example.bsbstudynovitsky.controllers;
 
-import com.example.bsbstudynovitsky.dto.user.UserDTO;
 import com.example.bsbstudynovitsky.dto.mappers.UserMapper;
+import com.example.bsbstudynovitsky.dto.user.UserDTO;
 import com.example.bsbstudynovitsky.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +28,12 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDTO save(@RequestBody UserDTO user) {
+    public UserDTO save(@Valid @RequestBody UserDTO user) {
         return userMapper.userToUserDTO(userService.save(userMapper.userDTOtoUser(user)));
     }
 
     @PutMapping("/{id}")
-    public UserDTO update(@PathVariable Long id, @RequestBody UserDTO user) {
+    public UserDTO update(@PathVariable Long id, @Valid @RequestBody UserDTO user) {
         return userMapper.userToUserDTO(userService.update(id, userMapper.userDTOtoUser(user)));
     }
 

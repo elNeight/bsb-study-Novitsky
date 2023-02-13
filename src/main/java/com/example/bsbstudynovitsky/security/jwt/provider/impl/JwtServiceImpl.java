@@ -38,7 +38,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public <T> T extractClaim(String token, Function<Claims, T> claimExtractor) {
+    public <T> T extractClaim(String token, Function<? super Claims, T> claimExtractor) {
 
         Claims claims = Jwts.parser()
                 .setSigningKey(secret)

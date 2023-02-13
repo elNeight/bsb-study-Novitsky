@@ -7,10 +7,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @Table(name = "documents")
-@EqualsAndHashCode(of = {"number"}, callSuper = true)
+@EqualsAndHashCode(of = {"title", "contentType"}, callSuper = true)
 public class Document extends BasicIdAwareEntity {
 
-    private String number;
+    private String title;
+    private String contentType;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "user_id")

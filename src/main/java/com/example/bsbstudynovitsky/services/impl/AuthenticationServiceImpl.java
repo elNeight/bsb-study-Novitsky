@@ -21,13 +21,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtResponse authenticate(AuthenticationRequest request) {
 
-        String username = request.getUsername();
-        String password = request.getPassword();
-
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        username,
-                        password
+                UsernamePasswordAuthenticationToken.unauthenticated(
+                        request.getUsername(),
+                        request.getPassword()
                 )
         );
 
