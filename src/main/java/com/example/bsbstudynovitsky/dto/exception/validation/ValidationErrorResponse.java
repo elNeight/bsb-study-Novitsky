@@ -1,4 +1,4 @@
-package com.example.bsbstudynovitsky.dto.validation;
+package com.example.bsbstudynovitsky.dto.exception.validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

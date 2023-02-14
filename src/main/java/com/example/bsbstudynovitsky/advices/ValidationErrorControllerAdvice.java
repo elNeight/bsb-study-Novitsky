@@ -1,7 +1,7 @@
-package com.example.bsbstudynovitsky.exception;
+package com.example.bsbstudynovitsky.advices;
 
-import com.example.bsbstudynovitsky.dto.validation.ValidationErrorResponse;
-import com.example.bsbstudynovitsky.dto.validation.Violation;
+import com.example.bsbstudynovitsky.dto.exception.validation.ValidationErrorResponse;
+import com.example.bsbstudynovitsky.dto.exception.validation.Violation;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

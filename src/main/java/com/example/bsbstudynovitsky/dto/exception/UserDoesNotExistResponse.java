@@ -1,13 +1,12 @@
-package com.example.bsbstudynovitsky.dto.validation;
+package com.example.bsbstudynovitsky.dto.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Violation {
+public class UserDoesNotExistResponse {
 
-    private String fieldName;
     private String message;
 
 }
