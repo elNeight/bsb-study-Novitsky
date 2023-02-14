@@ -1,4 +1,4 @@
-package com.example.bsbstudynovitsky.dto.mappers;
+package com.example.bsbstudynovitsky.dto.mappers.address;
 
 import com.example.bsbstudynovitsky.dto.address.AddressDTO;
 import com.example.bsbstudynovitsky.entities.Address;

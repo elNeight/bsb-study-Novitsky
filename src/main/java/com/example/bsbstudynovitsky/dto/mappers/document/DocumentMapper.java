@@ -1,4 +1,4 @@
-package com.example.bsbstudynovitsky.dto.mappers;
+package com.example.bsbstudynovitsky.dto.mappers.document;
 
 import com.example.bsbstudynovitsky.dto.document.DocumentDTO;
 import com.example.bsbstudynovitsky.entities.Document;
