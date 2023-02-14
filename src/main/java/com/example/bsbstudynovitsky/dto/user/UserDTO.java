@@ -1,10 +1,15 @@
 package com.example.bsbstudynovitsky.dto.user;
 
+import com.example.bsbstudynovitsky.dto.address.AddressDTO;
+import com.example.bsbstudynovitsky.dto.document.DocumentDTO;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class UserDTO {
@@ -24,5 +29,10 @@ public class UserDTO {
     @NotEmpty(message = "email shouldn't be empty")
     @Email(message = "wrong email format")
     private String email;
+
+    @Valid
+    private List<AddressDTO> addresses;
+    @Valid
+    private List<DocumentDTO> documents;
 
 }
