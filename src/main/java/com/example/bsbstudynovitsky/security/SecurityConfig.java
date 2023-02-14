@@ -1,5 +1,6 @@
 package com.example.bsbstudynovitsky.security;
 
+import com.example.bsbstudynovitsky.security.exception.AuthenticationEntryPointImpl;
 import com.example.bsbstudynovitsky.security.jwt.JwtAuthFilter;
 import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
 import com.example.bsbstudynovitsky.security.jwt.provider.impl.JwtServiceImpl;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -38,6 +40,8 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -82,6 +86,11 @@ public class SecurityConfig {
     @Bean
     protected OncePerRequestFilter jwtAuthFilter() {
         return new JwtAuthFilter(jwtService(), userDetailsService());
+    }
+
+    @Bean
+    protected AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthenticationEntryPointImpl();
     }
 
 }
