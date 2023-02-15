@@ -35,7 +35,7 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/authenticate").permitAll()
+                .requestMatchers("/authenticate", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -67,7 +67,7 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(
                 UserAuthDetails.builder()
                         .username("serzh")
-                        .password("1234567")
+                        .password(passwordEncoder().encode("1234567"))
                         .authorities(Collections.singleton(new SimpleGrantedAuthority("USER")))
                         .build()
         );
