@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class AddressDTO {
+public class AddressInfo {
 
     @NotEmpty(message = "street shouldn't be empty")
     @Size(min = 2, message = "street should be at least 2 characters")

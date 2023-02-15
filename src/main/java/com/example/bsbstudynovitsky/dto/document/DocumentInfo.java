@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class DocumentDTO {
+public class DocumentInfo {
 
     @NotEmpty(message = "title shouldn't be empty")
     @Size(min = 1, message = "document title should be at least 1 character")

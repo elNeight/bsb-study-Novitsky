@@ -1,7 +1,7 @@
 package com.example.bsbstudynovitsky.dto.user.request;
 
-import com.example.bsbstudynovitsky.dto.address.AddressDTO;
-import com.example.bsbstudynovitsky.dto.document.DocumentDTO;
+import com.example.bsbstudynovitsky.dto.address.AddressInfo;
+import com.example.bsbstudynovitsky.dto.document.DocumentInfo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,8 +31,8 @@ public class CreateUserRequest {
     private String email;
 
     @Valid
-    private List<AddressDTO> addresses;
+    private List<AddressInfo> addresses;
     @Valid
-    private List<DocumentDTO> documents;
+    private List<DocumentInfo> documents;
 
 }

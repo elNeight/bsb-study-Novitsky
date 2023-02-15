@@ -1,4 +1,4 @@
-package com.example.bsbstudynovitsky.dto.user.response;
+package com.example.bsbstudynovitsky.dto.user;
 
 import com.example.bsbstudynovitsky.dto.address.AddressInfo;
 import com.example.bsbstudynovitsky.dto.document.DocumentInfo;
@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CreateUserResponse {
+public class UserInfo {
 
     private String firstname;
     private String lastname;

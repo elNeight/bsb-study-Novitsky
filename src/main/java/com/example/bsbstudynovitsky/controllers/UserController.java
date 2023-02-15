@@ -3,7 +3,7 @@ package com.example.bsbstudynovitsky.controllers;
 import com.example.bsbstudynovitsky.dto.mappers.user.CreateUserMapper;
 import com.example.bsbstudynovitsky.dto.mappers.user.UpdateUserMapper;
 import com.example.bsbstudynovitsky.dto.mappers.user.UserMapper;
-import com.example.bsbstudynovitsky.dto.user.UserDTO;
+import com.example.bsbstudynovitsky.dto.user.UserInfo;
 import com.example.bsbstudynovitsky.dto.user.request.CreateUserRequest;
 import com.example.bsbstudynovitsky.dto.user.request.UpdateUserRequest;
 import com.example.bsbstudynovitsky.dto.user.response.CreateUserResponse;
@@ -26,12 +26,12 @@ public class UserController {
     private final UpdateUserMapper updateUserMapper;
 
     @GetMapping
-    public List<UserDTO> findAll() {
+    public List<UserInfo> findAll() {
         return userMapper.mapList(userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public UserDTO findById(@PathVariable Long id) {
+    public UserInfo findById(@PathVariable Long id) {
         return userMapper.userToUserDTO(userService.findById(id));
     }
 
