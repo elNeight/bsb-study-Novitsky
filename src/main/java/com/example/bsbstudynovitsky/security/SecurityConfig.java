@@ -4,7 +4,7 @@ import com.example.bsbstudynovitsky.security.exception.AuthenticationEntryPointI
 import com.example.bsbstudynovitsky.security.jwt.JwtAuthFilter;
 import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
 import com.example.bsbstudynovitsky.security.jwt.provider.impl.JwtServiceImpl;
-import com.example.bsbstudynovitsky.security.user.UserAuthDetails;
+import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,21 +14,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.Collections;
-
+@Data
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final UserDetailsService userDetailsService;
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,7 +50,7 @@ public class SecurityConfig {
     @Bean
     protected AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -59,18 +58,6 @@ public class SecurityConfig {
     @Bean
     protected AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                UserAuthDetails.builder()
-                        .username("serzh")
-                        .password(passwordEncoder().encode("1234567"))
-                        .authorities(Collections.singleton(new SimpleGrantedAuthority("USER")))
-                        .build()
-        );
     }
 
     @Bean
@@ -85,7 +72,7 @@ public class SecurityConfig {
 
     @Bean
     protected OncePerRequestFilter jwtAuthFilter() {
-        return new JwtAuthFilter(jwtService(), userDetailsService());
+        return new JwtAuthFilter(jwtService(), userDetailsService);
     }
 
     @Bean

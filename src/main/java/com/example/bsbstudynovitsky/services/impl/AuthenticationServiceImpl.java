@@ -4,29 +4,29 @@ import com.example.bsbstudynovitsky.dto.auth.request.AuthenticationRequest;
 import com.example.bsbstudynovitsky.dto.auth.request.RegistrationRequest;
 import com.example.bsbstudynovitsky.dto.auth.response.JwtResponse;
 import com.example.bsbstudynovitsky.dto.auth.response.RegistrationResponse;
+import com.example.bsbstudynovitsky.entities.security.Role;
+import com.example.bsbstudynovitsky.entities.security.UserAuthDetails;
+import com.example.bsbstudynovitsky.repositories.UserAuthDetailsRepository;
 import com.example.bsbstudynovitsky.security.jwt.provider.JwtService;
-import com.example.bsbstudynovitsky.security.user.UserAuthDetails;
 import com.example.bsbstudynovitsky.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final JwtService jwtService;
-    private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
+    private final UserAuthDetailsRepository userAuthDetailsRepository;
     private final AuthenticationManager authenticationManager;
 
     @Override
@@ -52,18 +52,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public RegistrationResponse register(RegistrationRequest request) {
 
-        if (userDetailsManager.userExists(request.getUsername()))
-            return new RegistrationResponse("User already exists");
+        Optional<UserAuthDetails> optionalUser = userAuthDetailsRepository.findByUsername(request.getUsername());
 
-        userDetailsManager.createUser(
-                UserAuthDetails.builder()
-                        .username(request.getUsername())
-                        .password(passwordEncoder.encode(request.getPassword()))
-                        .authorities(Collections.singleton(new SimpleGrantedAuthority("USER")))
-                        .build()
-        );
+        if (optionalUser.isPresent())
+            return new RegistrationResponse("Username already exists");
+
+        UserAuthDetails user = new UserAuthDetails();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.USER);
+
+        userAuthDetailsRepository.save(user);
 
         return new RegistrationResponse("Success");
+
     }
 
 }

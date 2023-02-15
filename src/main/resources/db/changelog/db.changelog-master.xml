@@ -65,4 +65,19 @@
 
     </changeSet>
 
+    <changeSet id="Create table credentials" author="user123">
+
+        <createTable tableName="credentials">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(256)"/>
+            <column name="password" type="varchar(256)"/>
+            <column name="role" type="varchar(256)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+    </changeSet>
+
 </databaseChangeLog>

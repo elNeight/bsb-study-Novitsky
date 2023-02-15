@@ -1,24 +1,29 @@
-package com.example.bsbstudynovitsky.security.user;
+package com.example.bsbstudynovitsky.entities.security;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.example.bsbstudynovitsky.entities.BasicIdAwareEntity;
+import com.example.bsbstudynovitsky.entities.User;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserAuthDetails implements UserDetails {
+@Data
+@Entity
+@Table(name = "credentials")
+@EqualsAndHashCode(of = {"username", "password", "role"}, callSuper = true)
+public class UserAuthDetails extends BasicIdAwareEntity implements UserDetails {
 
-    private final String username;
-    private final String password;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private String username;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return role.authorities();
     }
 
     @Override
@@ -50,5 +55,4 @@ public class UserAuthDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
